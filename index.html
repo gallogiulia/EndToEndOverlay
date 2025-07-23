@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Live Scoreboard</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: transparent;
+      color: white;
+      font-size: 1.5em;
+      padding: 20px;
+    }
+    .division {
+      font-weight: bold;
+      margin-top: 20px;
+      color: #FFD700;
+    }
+    .game {
+      margin-bottom: 10px;
+    }
+    .scores {
+      display: inline-block;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="scoreboard">Loading scores...</div>
+
+  <script>
+    async function fetchScores() {
+      try {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbzKtthISCwjQMUBWZrfYgPlQ2nqTEfOdJw7VO2YVPUNWbwF6UOTtjIH9n-T74caDBgCBA/exec");
+        const games = await res.json();
+
+        const container = document.getElementById("scoreboard");
+        container.innerHTML = "";
+
+        let currentDivision = "";
+        games.forEach(game => {
+          if (game.division !== currentDivision) {
+            currentDivision = game.division;
+            container.innerHTML += `<div class="division">${currentDivision}</div>`;
+          }
+          container.innerHTML += `
+            <div class="game">
+              ${game.match} (Ends: ${game.ends})
+              <span class="scores">${game.score1} - ${game.score2}</span>
+            </div>`;
+        });
+      } catch (error) {
+        document.getElementById("scoreboard").innerText = "Failed to load scores.";
+      }
+    }
+
+    fetchScores();
+    setInterval(fetchScores, 15000); // refresh every 15 seconds
+  </script>
+</body>
+</html>
