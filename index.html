@@ -32,7 +32,9 @@
   <script>
     async function fetchScores() {
       try {
-        const res = await fetch("https://script.google.com/macros/s/AKfycbzKtthISCwjQMUBWZrfYgPlQ2nqTEfOdJw7VO2YVPUNWbwF6UOTtjIH9n-T74caDBgCBA/exec");
+        //const res = await fetch("https://script.google.com/macros/s/AKfycbzKtthISCwjQMUBWZrfYgPlQ2nqTEfOdJw7VO2YVPUNWbwF6UOTtjIH9n-T74caDBgCBA/exec");
+        const res = await fetch("https://cors-ecamm-score.netlify.app/.netlify/functions/scores");
+
         const games = await res.json();
 
         const container = document.getElementById("scoreboard");
